@@ -24,6 +24,17 @@ const colors = [
   '#3877FF'
 ];
 
+function arenaSweep() {
+  for (let y = arena.length - 1; y > 0; --y) {
+    const isLineFull = !arena[y].some((value) => value === 0);
+    if (isLineFull) {
+      const row = arena.splice(y, 1)[0].fill(0);
+      arena.unshift(row);
+      y++;
+    }
+  }
+}
+
 function collides(arena, player) {
   const [m, o] = [player.matrix, player.pos];
   for (let y = 0; y < m.length; ++y) {
@@ -125,6 +136,7 @@ function playerDrop() {
     player.pos.y--;
     merge(arena, player);
     playerReset();
+    arenaSweep();
   }
   dropCounter = 0;
 }
