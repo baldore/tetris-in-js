@@ -33,7 +33,7 @@ function collides(arena, player) {
 
 function createMatrix(width, height) {
   const newMatrix = [];
-  while (--height) {
+  while (height--) {
     newMatrix.push(new Array(width).fill(0));
   }
   return newMatrix;
@@ -43,7 +43,6 @@ function merge(arena, player) {
   player.matrix.forEach((row, y) => {
     row.forEach((value, x) => {
       if (value !== 0) {
-        console.log(y, x);
         arena[y + player.pos.y][x + player.pos.x] = value;
       }
     });
