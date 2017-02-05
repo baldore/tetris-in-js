@@ -12,14 +12,49 @@ const matrix = [
   [0, 1, 0]
 ];
 
+const arena = createMatrix(12, 20);
+
 const player = {
-  pos: { x: 5, y: 5 },
+  pos: { x: 5, y: 0 },
   matrix
 };
+
+function collides(arena, player) {
+  const [m, o] = [player.matrix, player.pos];
+  for (let y = 0; y < m.length; ++y) {
+    for (let x = 0; x < m[y].length; ++x) {
+      if (m[y][x] !== 0 && (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function createMatrix(width, height) {
+  const newMatrix = [];
+  while (--height) {
+    newMatrix.push(new Array(width).fill(0));
+  }
+  return newMatrix;
+}
+
+function merge(arena, player) {
+  player.matrix.forEach((row, y) => {
+    row.forEach((value, x) => {
+      if (value !== 0) {
+        console.log(y, x);
+        arena[y + player.pos.y][x + player.pos.x] = value;
+      }
+    });
+  });
+}
 
 function draw() {
   context.fillStyle = '#000';
   context.fillRect(0, 0, canvas.width, canvas.height);
+
+  drawMatrix(arena, { x: 0, y: 0 });
   drawMatrix(player.matrix, player.pos);
 }
 
@@ -36,6 +71,11 @@ function drawMatrix(matrix, offset) {
 
 function playerDrop() {
   player.pos.y++;
+  if (collides(arena, player)) {
+    player.pos.y--;
+    merge(arena, player);
+    player.pos.y = 0;
+  }
   dropCounter = 0;
 }
 
@@ -45,8 +85,7 @@ function update(time = 0) {
   dropCounter += deltaTime;
 
   if (dropCounter > dropInterval) {
-    player.pos.y++;
-    dropCounter = 0;
+    playerDrop();
   }
 
   draw();
