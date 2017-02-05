@@ -85,6 +85,37 @@ function playerMove(direction) {
   }
 }
 
+function playerRotates(direction) {
+  const initialPosition = player.pos.x;
+  let offset = 1;
+  rotate(player.matrix, direction);
+
+  // TODO: Black magic here!!! Study better.
+  while (collides(arena, player)) {
+    player.pos.x += offset;
+    offset = -(offset + (offset > 0 ? 1 : -1));
+    if (offset > player.matrix[0].length) {
+      rotate(player.matrix, -direction);
+      player.pos.x = initialPosition;
+      return;
+    }
+  }
+}
+
+function rotate(matrix, direction) {
+  for (let y = 0; y< matrix.length; ++y) {
+    for (let x = 0; x < y; ++x) {
+      [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
+    }
+  }
+
+  if (direction > 0) {
+    matrix.forEach((row) => row.reverse());
+  } else {
+    matrix.reverse();
+  }
+}
+
 function update(time = 0) {
   const deltaTime = time - lastTime;
   lastTime = time;
@@ -103,11 +134,13 @@ update();
 document.addEventListener('keydown', (event) => {
   if (event.keyCode === 37) {
     playerMove(-1);
-  }
-  if (event.keyCode === 39) {
+  } else if (event.keyCode === 39) {
     playerMove(1);
-  }
-  if (event.keyCode === 40) {
+  } else if (event.keyCode === 40) {
     playerDrop();
+  } else if (event.keyCode === 81) { // q
+    playerRotates(-1);
+  } else if (event.keyCode === 87) { // w
+    playerRotates(1);
   }
 });
