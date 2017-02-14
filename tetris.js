@@ -9,8 +9,9 @@ let lastTime = 0;
 const arena = createMatrix(12, 20);
 
 const player = {
-  pos: { x: 5, y: 0 },
-  matrix: createPiece('T')
+  pos: { x: 0, y: 0 },
+  matrix: null,
+  score: 0
 };
 
 const colors = [
@@ -25,12 +26,16 @@ const colors = [
 ];
 
 function arenaSweep() {
+  let rowCount = 1;
+  const pointsPerLine = 10;
   for (let y = arena.length - 1; y > 0; --y) {
     const isLineFull = !arena[y].some((value) => value === 0);
     if (isLineFull) {
       const row = arena.splice(y, 1)[0].fill(0);
       arena.unshift(row);
       y++;
+      player.score += rowCount * pointsPerLine;
+      rowCount *= 2;
     }
   }
 }
@@ -137,6 +142,7 @@ function playerDrop() {
     merge(arena, player);
     playerReset();
     arenaSweep();
+    updateScore();
   }
   dropCounter = 0;
 }
@@ -155,6 +161,8 @@ function playerReset() {
   player.pos.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
   if (collides(arena, player)) {
     arena.forEach((row) => row.fill(0));
+    player.score = 0;
+    updateScore();
   }
 }
 
@@ -202,7 +210,9 @@ function update(time = 0) {
   requestAnimationFrame(update);
 }
 
-update();
+function updateScore() {
+  document.querySelector('#score').innerText = player.score;
+}
 
 document.addEventListener('keydown', (event) => {
   if (event.keyCode === 37) {
@@ -217,3 +227,7 @@ document.addEventListener('keydown', (event) => {
     playerRotates(1);
   }
 });
+
+playerReset();
+updateScore();
+update();
