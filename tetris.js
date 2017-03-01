@@ -2,17 +2,11 @@ const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
 context.scale(20, 20);
 
-let dropCounter = 0;
-let dropInterval = 1000;
 let lastTime = 0;
 
 const arena = createMatrix(12, 20);
 
-const player = {
-  pos: { x: 0, y: 0 },
-  matrix: null,
-  score: 0
-};
+const player = new Player;
 
 const colors = [
   null,
@@ -135,25 +129,6 @@ function drawMatrix(matrix, offset) {
   });
 }
 
-function playerDrop() {
-  player.pos.y++;
-  if (collides(arena, player)) {
-    player.pos.y--;
-    merge(arena, player);
-    playerReset();
-    arenaSweep();
-    updateScore();
-  }
-  dropCounter = 0;
-}
-
-function playerMove(direction) {
-  player.pos.x += direction;
-  if (collides(arena, player)) {
-    player.pos.x -= direction;
-  }
-}
-
 function playerReset() {
   const pieces = 'ILJOTSZ';
   player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
@@ -163,23 +138,6 @@ function playerReset() {
     arena.forEach((row) => row.fill(0));
     player.score = 0;
     updateScore();
-  }
-}
-
-function playerRotates(direction) {
-  const initialPosition = player.pos.x;
-  let offset = 1;
-  rotate(player.matrix, direction);
-
-  // TODO: Black magic here!!! Study better.
-  while (collides(arena, player)) {
-    player.pos.x += offset;
-    offset = -(offset + (offset > 0 ? 1 : -1));
-    if (offset > player.matrix[0].length) {
-      rotate(player.matrix, -direction);
-      player.pos.x = initialPosition;
-      return;
-    }
   }
 }
 
@@ -200,11 +158,8 @@ function rotate(matrix, direction) {
 function update(time = 0) {
   const deltaTime = time - lastTime;
   lastTime = time;
-  dropCounter += deltaTime;
 
-  if (dropCounter > dropInterval) {
-    playerDrop();
-  }
+  player.update(deltaTime);
 
   draw();
   requestAnimationFrame(update);
@@ -216,15 +171,15 @@ function updateScore() {
 
 document.addEventListener('keydown', (event) => {
   if (event.keyCode === 37) {
-    playerMove(-1);
+    player.move(-1);
   } else if (event.keyCode === 39) {
-    playerMove(1);
+    player.move(1);
   } else if (event.keyCode === 40) {
-    playerDrop();
+    player.drop();
   } else if (event.keyCode === 81) { // q
-    playerRotates(-1);
+    player.rotate(-1);
   } else if (event.keyCode === 87) { // w
-    playerRotates(1);
+    player.rotate(1);
   }
 });
 
