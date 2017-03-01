@@ -77,16 +77,6 @@ function createPiece(type) {
   }
 }
 
-function merge(matrix, player) {
-  player.matrix.forEach((row, y) => {
-    row.forEach((value, x) => {
-      if (value !== 0) {
-        matrix[y + player.pos.y][x + player.pos.x] = value;
-      }
-    });
-  });
-}
-
 function draw() {
   context.fillStyle = '#000';
   context.fillRect(0, 0, canvas.width, canvas.height);

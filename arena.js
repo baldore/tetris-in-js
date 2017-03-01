@@ -11,6 +11,16 @@ class Arena {
     this.matrix.forEach((row) => row.fill(0));
   }
 
+  merge(player) {
+    player.matrix.forEach((row, y) => {
+      row.forEach((value, x) => {
+        if (value !== 0) {
+          this.matrix[y + player.pos.y][x + player.pos.x] = value;
+        }
+      });
+    });
+  }
+
   sweep() {
     let rowCount = 1;
     const pointsPerLine = 10;
