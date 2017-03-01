@@ -17,12 +17,12 @@ class Player {
   rotate(direction) {
     const initialPosition = this.pos.x;
     let offset = 1;
-    rotate(this.matrix, direction);
+    this._rotateMatrix(this.matrix, direction);
     while (collides(arena, this)) {
       this.pos.x += offset;
       offset = -(offset + (offset > 0 ? 1 : -1));
       if (offset > this.matrix[0].length) {
-        rotate(this.matrix, -direction);
+        this._rotateMatrix(this.matrix, -direction);
         this.pos.x = initialPosition;
         return;
       }
@@ -57,6 +57,20 @@ class Player {
     this.dropCounter += deltaTime;
     if (this.dropCounter > this.dropInterval) {
       this.drop();
+    }
+  }
+
+  _rotateMatrix(matrix, direction) {
+    for (let y = 0; y < matrix.length; ++y) {
+      for (let x = 0; x < y; ++x) {
+        [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
+      }
+    }
+
+    if (direction > 0) {
+      matrix.forEach((row) => row.reverse());
+    } else {
+      matrix.reverse();
     }
   }
 }

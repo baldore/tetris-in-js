@@ -129,30 +129,6 @@ function drawMatrix(matrix, offset) {
   });
 }
 
-function rotate(matrix, direction) {
-  for (let y = 0; y< matrix.length; ++y) {
-    for (let x = 0; x < y; ++x) {
-      [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
-    }
-  }
-
-  if (direction > 0) {
-    matrix.forEach((row) => row.reverse());
-  } else {
-    matrix.reverse();
-  }
-}
-
-function update(time = 0) {
-  const deltaTime = time - lastTime;
-  lastTime = time;
-
-  player.update(deltaTime);
-
-  draw();
-  requestAnimationFrame(update);
-}
-
 function updateScore() {
   document.querySelector('#score').innerText = player.score;
 }
