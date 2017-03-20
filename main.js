@@ -2,12 +2,6 @@ const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
 context.scale(20, 20);
 
-let lastTime = 0;
-
-const arena = new Arena(12, 20);
-
-const player = new Player;
-
 const colors = [
   null,
   '#FF0D72',
@@ -19,6 +13,9 @@ const colors = [
   '#3877FF'
 ];
 
+const arena = new Arena(12, 20);
+const player = new Player;
+const tetris = new Tetris();
 
 function createPiece(type) {
   if (type === 'T') {
@@ -66,37 +63,8 @@ function createPiece(type) {
   }
 }
 
-function draw() {
-  context.fillStyle = '#000';
-  context.fillRect(0, 0, canvas.width, canvas.height);
-
-  drawMatrix(arena.matrix, { x: 0, y: 0 });
-  drawMatrix(player.matrix, player.pos);
-}
-
-function drawMatrix(matrix, offset) {
-  matrix.forEach((row, y) => {
-    row.forEach((value, x) => {
-      if (value !== 0) {
-        context.fillStyle = colors[value];
-        context.fillRect(x + offset.x, y + offset.y, 1, 1);
-      }
-    });
-  });
-}
-
 function updateScore() {
   document.querySelector('#score').innerText = player.score;
-}
-
-function update(time = 0) {
-  const deltaTime = time - lastTime;
-  lastTime = time;
-
-  player.update(deltaTime);
-
-  draw();
-  requestAnimationFrame(update);
 }
 
 document.addEventListener('keydown', (event) => {
@@ -113,6 +81,4 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-player.reset();
 updateScore();
-update();
