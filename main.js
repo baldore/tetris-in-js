@@ -1,21 +1,6 @@
 const canvas = document.getElementById('tetris');
-const context = canvas.getContext('2d');
-context.scale(20, 20);
 
-const colors = [
-  null,
-  '#FF0D72',
-  '#0DC2FF',
-  '#0DFF72',
-  '#F538FF',
-  '#FF8E0D',
-  '#FFE138',
-  '#3877FF'
-];
-
-const arena = new Arena(12, 20);
-const player = new Player;
-const tetris = new Tetris();
+const tetris = new Tetris(canvas);
 
 function createPiece(type) {
   if (type === 'T') {
@@ -64,10 +49,11 @@ function createPiece(type) {
 }
 
 function updateScore() {
-  document.querySelector('#score').innerText = player.score;
+  document.querySelector('#score').innerText = tetris.player.score;
 }
 
 document.addEventListener('keydown', (event) => {
+  const player = tetris.player;
   if (event.keyCode === 37) {
     player.move(-1);
   } else if (event.keyCode === 39) {

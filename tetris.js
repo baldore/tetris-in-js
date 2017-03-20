@@ -1,11 +1,28 @@
 class Tetris {
-  constructor() {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.context = canvas.getContext('2d');
+    this.colors = [
+      null,
+      '#FF0D72',
+      '#0DC2FF',
+      '#0DFF72',
+      '#F538FF',
+      '#FF8E0D',
+      '#FFE138',
+      '#3877FF'
+    ];
+    this.arena = new Arena(12, 20);
+    this.player = new Player(this);
+
+    this.context.scale(20, 20);
+
     let lastTime = 0;
     const update = (time = 0) => {
       const deltaTime = time - lastTime;
       lastTime = time;
 
-      player.update(deltaTime);
+      this.player.update(deltaTime);
 
       this.draw();
       requestAnimationFrame(update);
@@ -15,19 +32,19 @@ class Tetris {
   }
 
   draw() {
-    context.fillStyle = '#000';
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    this.context.fillStyle = '#000';
+    this.context.fillRect(0, 0, canvas.width, canvas.height);
 
-    this.drawMatrix(arena.matrix, { x: 0, y: 0 });
-    this.drawMatrix(player.matrix, player.pos);
+    this.drawMatrix(this.arena.matrix, { x: 0, y: 0 });
+    this.drawMatrix(this.player.matrix, this.player.pos);
   }
 
   drawMatrix(matrix, offset) {
     matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
-          context.fillStyle = colors[value];
-          context.fillRect(x + offset.x, y + offset.y, 1, 1);
+          this.context.fillStyle = this.colors[value];
+          this.context.fillRect(x + offset.x, y + offset.y, 1, 1);
         }
       });
     });
