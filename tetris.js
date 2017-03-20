@@ -19,17 +19,6 @@ const colors = [
   '#3877FF'
 ];
 
-function collides(arena, player) {
-  const [m, o] = [player.matrix, player.pos];
-  for (let y = 0; y < m.length; ++y) {
-    for (let x = 0; x < m[y].length; ++x) {
-      if (m[y][x] !== 0 && (arena.matrix[y + o.y] && arena.matrix[y + o.y][x + o.x]) !== 0) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
 
 function createPiece(type) {
   if (type === 'T') {

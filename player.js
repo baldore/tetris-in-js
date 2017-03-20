@@ -9,7 +9,7 @@ class Player {
 
   move(direction) {
     this.pos.x += direction;
-    if (collides(arena, this)) {
+    if (arena.collide(this)) {
       this.pos.x -= direction;
     }
   }
@@ -18,7 +18,7 @@ class Player {
     const initialPosition = this.pos.x;
     let offset = 1;
     this._rotateMatrix(this.matrix, direction);
-    while (collides(arena, this)) {
+    while (arena.collide(this)) {
       this.pos.x += offset;
       offset = -(offset + (offset > 0 ? 1 : -1));
       if (offset > this.matrix[0].length) {
@@ -31,7 +31,7 @@ class Player {
 
   drop() {
     this.pos.y++;
-    if (collides(arena, this)) {
+    if (arena.collide(this)) {
       this.pos.y--;
       arena.merge(this);
       this.reset();
@@ -46,7 +46,7 @@ class Player {
     this.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
     this.pos.y = 0;
     this.pos.x = (arena.matrix[0].length / 2 | 0) - (this.matrix[0].length / 2 | 0);
-    if (collides(arena, this)) {
+    if (arena.collide(this)) {
       arena.clear();
       this.score = 0;
       updateScore();
