@@ -1,0 +1,8 @@
+{
+  "name": "tetris-in-js",
+  "version": "1.0.0",
+  "main": "app/main.js",
+  "repository": "git@github.com:baldore/tetris-in-js.git",
+  "author": "baldore <acornssn@gmail.com>",
+  "license": "MIT"
+}
