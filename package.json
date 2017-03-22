@@ -4,5 +4,15 @@
   "main": "app/main.js",
   "repository": "git@github.com:baldore/tetris-in-js.git",
   "author": "baldore <acornssn@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "source-map-loader": "^0.2.0",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.2.1",
+    "webpack": "^2.3.1",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "scripts": {
+    "start": "webpack-dev-server"
+  }
 }

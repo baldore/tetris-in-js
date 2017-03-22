@@ -1,5 +1,9 @@
+import Player from './player';
+
 class Arena {
-  constructor(width, height) {
+  matrix: number[][]
+
+  constructor(width: number, height: number) {
     const matrix = [];
     while (height--) {
       matrix.push(new Array(width).fill(0));
@@ -7,7 +11,7 @@ class Arena {
     this.matrix = matrix;
   }
 
-  collide(player) {
+  collide(player: Player) {
     const [m, o] = [player.matrix, player.pos];
     for (let y = 0; y < m.length; ++y) {
       for (let x = 0; x < m[y].length; ++x) {
@@ -23,7 +27,7 @@ class Arena {
     this.matrix.forEach((row) => row.fill(0));
   }
 
-  merge(player) {
+  merge(player: Player) {
     player.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
@@ -50,3 +54,5 @@ class Arena {
     return score;
   }
 }
+
+export default Arena;

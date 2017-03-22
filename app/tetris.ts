@@ -1,5 +1,15 @@
+import Arena from './arena';
+import Player, { Position } from './player';
+
 class Tetris {
-  constructor(element) {
+  element: Element
+  canvas: HTMLCanvasElement
+  context: CanvasRenderingContext2D
+  colors: string[]
+  arena: Arena
+  player: Player
+
+  constructor(element: HTMLElement) {
     this.element = element;
     this.canvas = element.querySelector('canvas');
     this.context = this.canvas.getContext('2d');
@@ -41,7 +51,7 @@ class Tetris {
     this.drawMatrix(this.player.matrix, this.player.pos);
   }
 
-  drawMatrix(matrix, offset) {
+  drawMatrix(matrix: number[][], offset: Position) {
     matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
@@ -52,7 +62,10 @@ class Tetris {
     });
   }
 
-  updateScore(score) {
-    this.element.querySelector('.score').innerText = score;
+  updateScore(score: number) {
+    const scoreElement = <HTMLElement>this.element.querySelector('.score')
+    scoreElement.innerText = String(score);
   }
 }
+
+export default Tetris;

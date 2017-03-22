@@ -1,9 +1,26 @@
+import createPiece from './create-piece';
+import Tetris from './tetris';
+import Arena from './arena';
+
+export interface Position {
+  x: number,
+  y: number
+}
+
 class Player {
-  constructor(tetris) {
+  DROP_SLOW: number
+  DROP_FAST: number
+  matrix: number[][]
+  arena: Arena
+  dropCounter: number
+  dropInterval: number
+  pos: Position
+  score: number
+
+  constructor(public tetris: Tetris) {
     this.DROP_SLOW = 1000;
     this.DROP_FAST = 50;
 
-    this.tetris = tetris;
     this.arena = tetris.arena;
     this.dropCounter = 0;
     this.dropInterval = this.DROP_SLOW;
@@ -14,14 +31,14 @@ class Player {
     this.reset();
   }
 
-  move(direction) {
+  move(direction: number) {
     this.pos.x += direction;
     if (this.arena.collide(this)) {
       this.pos.x -= direction;
     }
   }
 
-  rotate(direction) {
+  rotate(direction: number) {
     const initialPosition = this.pos.x;
     let offset = 1;
     this._rotateMatrix(this.matrix, direction);
@@ -60,14 +77,14 @@ class Player {
     }
   }
 
-  update(deltaTime) {
+  update(deltaTime: number) {
     this.dropCounter += deltaTime;
     if (this.dropCounter > this.dropInterval) {
       this.drop();
     }
   }
 
-  _rotateMatrix(matrix, direction) {
+  _rotateMatrix(matrix: number[][], direction: number) {
     for (let y = 0; y < matrix.length; ++y) {
       for (let x = 0; x < y; ++x) {
         [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]];
@@ -81,3 +98,5 @@ class Player {
     }
   }
 }
+
+export default Player;
