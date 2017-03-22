@@ -11,6 +11,15 @@
             font-size: 2em;
             text-align: center;
         }
+
+        .container {
+            display: flex;
+        }
+
+        .player {
+            flex: 1 1 auto;
+        }
+
         canvas {
             border: solid .2em #fff;
             height: 85vh;
@@ -18,8 +27,17 @@
     </style>
 </head>
 <body>
-    <div id="score"></div>
-    <canvas id="tetris" width="240" height="400"></canvas>
+    <div class="container">
+        <div class="player">
+            <div class="score"></div>
+            <canvas id="tetris" width="240" height="400"></canvas>
+        </div>
+
+        <div class="player">
+            <div class="score"></div>
+            <canvas id="tetris" width="240" height="400"></canvas>
+        </div>
+    </div>
 
     <script src="arena.js"></script>
     <script src="player.js"></script>

@@ -35,6 +35,7 @@ class Arena {
 
   sweep() {
     let rowCount = 1;
+    let score = 0;
     const pointsPerLine = 10;
     for (let y = this.matrix.length - 1; y > 0; --y) {
       const isLineFull = !this.matrix[y].some((value) => value === 0);
@@ -42,9 +43,10 @@ class Arena {
         const row = this.matrix.splice(y, 1)[0].fill(0);
         this.matrix.unshift(row);
         y++;
-        player.score += rowCount * pointsPerLine;
+        score += rowCount * pointsPerLine;
         rowCount *= 2;
       }
     }
+    return score;
   }
 }

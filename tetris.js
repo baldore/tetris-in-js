@@ -1,7 +1,8 @@
 class Tetris {
-  constructor(canvas) {
-    this.canvas = canvas;
-    this.context = canvas.getContext('2d');
+  constructor(element) {
+    this.element = element;
+    this.canvas = element.querySelector('canvas');
+    this.context = this.canvas.getContext('2d');
     this.colors = [
       null,
       '#FF0D72',
@@ -29,11 +30,12 @@ class Tetris {
     }
 
     update();
+    this.updateScore(0);
   }
 
   draw() {
     this.context.fillStyle = '#000';
-    this.context.fillRect(0, 0, canvas.width, canvas.height);
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.drawMatrix(this.arena.matrix, { x: 0, y: 0 });
     this.drawMatrix(this.player.matrix, this.player.pos);
@@ -48,5 +50,9 @@ class Tetris {
         }
       });
     });
+  }
+
+  updateScore(score) {
+    this.element.querySelector('.score').innerText = score;
   }
 }
