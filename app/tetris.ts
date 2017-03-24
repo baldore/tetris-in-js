@@ -2,15 +2,13 @@ import Arena from './arena';
 import Player, { Position } from './player';
 
 class Tetris {
-  element: Element
   canvas: HTMLCanvasElement
   context: CanvasRenderingContext2D
   colors: string[]
   arena: Arena
   player: Player
 
-  constructor(element: HTMLElement) {
-    this.element = element;
+  constructor(public element: Element) {
     this.canvas = element.querySelector('canvas');
     this.context = this.canvas.getContext('2d');
     this.colors = [

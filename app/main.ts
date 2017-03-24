@@ -3,7 +3,7 @@ import Tetris from './tetris';
 const playerElements = document.querySelectorAll('.player');
 const tetri: Tetris[] = [];
 
-[...playerElements].forEach((element) => {
+Array.from(playerElements).forEach((element) => {
   const tetris = new Tetris(element);
   tetri.push(tetris);
 });
